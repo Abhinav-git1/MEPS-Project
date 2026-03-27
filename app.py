@@ -106,7 +106,6 @@ def show_clickable_chart(title, filename, explanation):
 
         st.markdown("---")
 
-
 # =================================
 # DISTRIBUTION ANALYSIS
 # =================================
@@ -221,8 +220,14 @@ show_clickable_chart(
     "SHAP analysis confirms the most influential predictors."
 )
 
+show_clickable_chart(
+    "Figure 16: Predicted vs Actual Year-2 Outpatient Visits (Final Model)",
+    "figure_16_predicted_vs_actual_visits.png",
+    "This chart compares predicted and actual Year-2 outpatient visits. Points close to the diagonal line indicate accurate predictions. The model predicts typical utilization well but is less precise for very high utilization cases. This pattern is consistent with the model’s performance metrics, including an R² of approximately 0.46 and a cross-validated R² of approximately 0.43."
+)
+
 # =================================
-# MODEL EVALUATION SECTION
+# MODEL EVALUATION
 # =================================
 
 st.header("Model Evaluation")
@@ -231,28 +236,56 @@ with st.expander("Understanding Model Performance Metrics"):
 
     st.markdown(
 """
-Model performance was evaluated using standard regression metrics to assess predictive accuracy.
+Model performance was evaluated using standard regression metrics and cross-validation to assess predictive accuracy and model reliability.
 
-The linear regression model demonstrated moderate predictive performance in estimating Year-2 office visits.
+---
 
-**Model Results**
+### Model 1: Linear Regression (Baseline Model)
 
 R² = **0.13**  
 RMSE = **74.01**  
 MAE = **25.91**
 
-**Metric Explanations**
+The linear regression model served as the baseline model and provided an initial estimate of healthcare utilization. While the model captured general utilization trends, its performance was limited due to the complex and nonlinear nature of healthcare demand.
 
-**R-squared (R²)**  
-Measures how much variability in healthcare visits is explained by the model.
+---
 
-**Root Mean Squared Error (RMSE)**  
-Measures prediction error, giving more weight to large errors.
+### Linear Regression Cross-Validation Results
 
-**Mean Absolute Error (MAE)**  
-Measures the average difference between predicted and actual visits.
+Cross-Validation R² Scores:
 
-These results indicate that predicting individual healthcare utilization remains challenging due to high variability in patient behavior.
+-13.62  
+0.10  
+0.04  
+-0.12  
+-0.79  
+
+Average Cross-Validation R² = **-2.88**
+
+The negative cross-validation results indicated that the linear regression model struggled to generalize across different data samples. This instability reflects the highly variable and skewed nature of healthcare utilization data and highlighted the need for more flexible modeling approaches.
+
+---
+
+### Model 2: Random Forest (Improved Model)
+
+R² = **0.35**
+
+The Random Forest model improved predictive performance by capturing nonlinear relationships among demographic characteristics, chronic conditions, and prior healthcare utilization.
+
+---
+
+### Model 3: Random Forest with Log Transformation (Final Model)
+
+R² = **0.46**  
+Cross-Validation R² = **0.43**
+
+Applying a log transformation to the target variable stabilized model performance and produced the best predictive accuracy. The final Random Forest model demonstrated strong generalization across data samples and provided the most reliable predictions of Year-2 outpatient visits.
+
+---
+
+### Overall Interpretation
+
+Model performance improved progressively as more advanced modeling techniques were introduced. The transition from Linear Regression to Random Forest and then to a log-transformed Random Forest model demonstrates the importance of handling skewed healthcare utilization data and capturing nonlinear relationships in healthcare demand.
 """
     )
 
