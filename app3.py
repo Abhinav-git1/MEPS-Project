@@ -415,7 +415,7 @@ sns.heatmap(
     cmap="coolwarm",
     annot=True,
     fmt=".2f",
-    annot_kws={"size": 8},
+    annot_kws={"size": 5},
     square=True,
     ax=ax
 )
