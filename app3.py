@@ -54,7 +54,7 @@ def load_models():
     )
 
     rf_model = joblib.load(
-        "meps_random_forest.pkl"
+        "meps_random_forest2.pkl"
     )
 
     gb_model = joblib.load(
